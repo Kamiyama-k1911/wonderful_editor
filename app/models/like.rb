@@ -19,6 +19,8 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Like < ApplicationRecord
+  validates :body, presence: true
+
   belongs_to :user
   belongs_to :article
 end

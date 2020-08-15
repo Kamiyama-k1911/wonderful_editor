@@ -21,6 +21,21 @@
 #
 require "rails_helper"
 
-RSpec.describe Comment, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+RSpec.fdescribe Comment, type: :model do
+  context "本文が空じゃないデータを入力した時" do
+    it "データ登録に成功する" do
+      comment = build(:comment)
+      expect(comment).to be_valid
+    end
+  end
+
+  context "本文が空のデータを入力した時" do
+    it "データ登録に失敗する" do
+      comment = build(:comment, body: nil)
+
+      expect(comment).to be_invalid
+      expect(comment.errors.details[:body][0][:error]).to eq :blank
+    end
+  end
+
 end
