@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # == Schema Information
 #
 # Table name: users
@@ -30,19 +28,13 @@
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #  index_users_on_uid_and_provider      (uid,provider) UNIQUE
 #
-class User < ActiveRecord::Base
-  has_many :articles , dependent: :destroy
-  has_many :comments , dependent: :destroy
-  has_many :likes, dependent: :destroy
+FactoryBot.define do
+  password = Faker::Internet.password
 
-  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-
-  validates :name, presence: true
-  validates :email, presence: true, uniqueness: { case_sensitive: false }, format: { with: VALID_EMAIL_REGEX }
-  extend Devise::Models
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
-  include DeviseTokenAuth::Concerns::User
+  factory :user do
+    name { Faker::Name.name }
+    sequence(:email) {|n| "#{n}_#{Faker::Internet.email}" }
+    password { password }
+    password_confirmation { password }
+  end
 end
