@@ -29,12 +29,16 @@
 #  index_users_on_uid_and_provider      (uid,provider) UNIQUE
 #
 FactoryBot.define do
-  password = Faker::Internet.password
-
   factory :user do
     name { Faker::Name.name }
     sequence(:email) {|n| "#{n}_#{Faker::Internet.email}" }
-    password { password }
-    password_confirmation { password }
+    password { Faker::Internet.password }
+  end
+
+end
+
+def user_with_articles(articles_count: 5)
+  FactoryBot.create(:user) do |user|
+    FactoryBot.create_list(:article, articles_count, user: user)
   end
 end

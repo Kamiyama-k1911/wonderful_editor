@@ -21,7 +21,7 @@
 #
 require "rails_helper"
 
-RSpec.fdescribe Comment, type: :model do
+RSpec.describe Comment, type: :model do
   context "本文が空じゃないデータを入力した時" do
     it "データ登録に成功する" do
       comment = build(:comment)
