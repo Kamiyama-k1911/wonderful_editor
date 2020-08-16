@@ -19,7 +19,7 @@
 #
 require "rails_helper"
 
-RSpec.fdescribe Article, type: :model do
+RSpec.describe Article, type: :model do
   context "正しいデータを入力した時" do
     it "データ登録に成功する" do
       user = build(:article)
@@ -30,6 +30,9 @@ RSpec.fdescribe Article, type: :model do
   context "タイトルが空のデータを入力した時" do
     it "データ登録に失敗する" do
       user = build(:article, title: nil)
+
+
+      binding.pry
 
       expect(user).to be_invalid
       expect(user.errors.details[:title][0][:error]).to eq :blank
