@@ -31,8 +31,6 @@ RSpec.describe Article, type: :model do
     it "データ登録に失敗する" do
       user = build(:article, title: nil)
 
-      binding.pry
-
       expect(user).to be_invalid
       expect(user.errors.details[:title][0][:error]).to eq :blank
     end
