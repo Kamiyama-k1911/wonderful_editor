@@ -13,9 +13,17 @@ module Api::V1
     def create
       @article = current_user.articles.build(article_params)
 
-      @article.save
+      @article.save!
 
       render json: @article
+    end
+
+    def update
+      article = current_user.articles.find(params[:id])
+
+      article.update!(article_params)
+
+      render json: article
     end
 
     private
