@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "Articles", type: :request do
-  describe "get /api/vi/articles.json" do
+  describe "get /api/v1/articles.json" do
     subject { get(api_v1_articles_path) }
 
     before  { user_with_articles(articles_count: 3) }
@@ -17,7 +17,7 @@ RSpec.describe "Articles", type: :request do
     end
   end
 
-  describe "get /api/vi/articles.json/:id" do
+  describe "get /api/v1/articles.json/:id" do
     subject { get(api_v1_article_path(article_id)) }
 
     context "指定したidの投稿が取得できる時" do
@@ -46,19 +46,18 @@ RSpec.describe "Articles", type: :request do
     end
   end
 
-  describe "post /api/vi/articles.json" do
+  describe "post /api/v1/articles.json" do
     subject { post(api_v1_articles_path, params: params) }
 
     context "正しいパラメータを入力した時" do
       let(:params) do
         { article: attributes_for(:article) }
       end
-      let(:current_user) { create(:user) }
+      let!(:current_user) { create(:user) }
 
-      before { allow_any_instance(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user) }
+      before { allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user) }
 
-      it "新規記事投稿に成功する" do
-        expect(Api::V1::BaseApiController.current_user).to eq(current_user)
+      fit "新規記事投稿に成功する" do
 
         expect { subject }.to change { Article.where(user_id: current_user.id).count }.by(1)
         res = JSON.parse(response.body)
@@ -72,8 +71,9 @@ RSpec.describe "Articles", type: :request do
       let(:params) do
         attributes_for(:article)
       end
-      it "新規記事投稿に失敗する" do
-        expect { subject }.to raise_error ActionController::ParameterMissing
+      let!(:user) { create(:user) }
+      fit "新規記事投稿に失敗する" do
+        expect{ subject }.to raise_error ActionController::ParameterMissing
       end
     end
   end
