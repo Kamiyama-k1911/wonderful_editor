@@ -31,8 +31,6 @@
 require "rails_helper"
 
 RSpec.describe User, type: :model do
-
-
   context "正しいデータを入力した時" do
     it "データ登録に成功する" do
       user = build(:user)
@@ -59,9 +57,10 @@ RSpec.describe User, type: :model do
   end
 
   context "すでに登録されているメールアドレスが入力された時" do
-    before { create(:user,email: "foo@example.com" ) }
+    before { create(:user, email: "foo@example.com") }
+
     it "データ登録に失敗する" do
-      user = build(:user, email: "foo@example.com" )
+      user = build(:user, email: "foo@example.com")
 
       expect(user).to be_invalid
       expect(user.errors.details[:email][0][:error]).to eq :taken
@@ -70,7 +69,7 @@ RSpec.describe User, type: :model do
 
   context "フォーマットに沿わないメールアドレスが入力された時" do
     it "データ登録に失敗する" do
-      user = build(:user, email: "aaaaaaaaaa" )
+      user = build(:user, email: "aaaaaaaaaa")
 
       expect(user).to be_invalid
       expect(user.errors.messages[:email][1]).to eq "is not an email"
