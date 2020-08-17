@@ -6,8 +6,11 @@ RSpec.describe "Articles", type: :request do
 
     before  { user_with_articles(articles_count: 3) }
 
-    it "投稿一覧が取得できる" do
+    fit "投稿一覧が取得できる" do
       subject
+
+      binding.pry
+
       res = JSON.parse(response.body)
 
       expect(res.length).to eq 3
@@ -46,7 +49,7 @@ RSpec.describe "Articles", type: :request do
     end
   end
 
-  describe "post /api/vi/articles.json" do
+  fdescribe "post /api/vi/articles.json" do
     subject { post(api_v1_articles_path, params: params) }
 
     context "正しいパラメータを入力した時" do
@@ -55,9 +58,9 @@ RSpec.describe "Articles", type: :request do
       end
       let(:current_user) { create(:user) }
 
-      before { allow_any_instance(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user) }
+      before { allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user) }
 
-      it "新規記事投稿に成功する" do
+      fit "新規記事投稿に成功する" do
         expect(Api::V1::BaseApiController.current_user).to eq(current_user)
 
         expect { subject }.to change { Article.where(user_id: current_user.id).count }.by(1)

@@ -39,7 +39,10 @@ RSpec.describe User, type: :model do
   end
 
   context "名前が空のデータを入力した時" do
-    it "データ登録に失敗する" do
+    fit "データ登録に失敗する" do
+
+      binding.pry
+
       user = build(:user, name: nil)
 
       expect(user).to be_invalid
@@ -59,7 +62,7 @@ RSpec.describe User, type: :model do
   context "すでに登録されているメールアドレスが入力された時" do
     before { create(:user, email: "foo@example.com") }
 
-    it "データ登録に失敗する" do
+    fit "データ登録に失敗する" do
       user = build(:user, email: "foo@example.com")
 
       expect(user).to be_invalid
@@ -72,7 +75,7 @@ RSpec.describe User, type: :model do
       user = build(:user, email: "aaaaaaaaaa")
 
       expect(user).to be_invalid
-      expect(user.errors.messages[:email][1]).to eq "is not an email"
+      expect(user.errors.messages[:email][0]).to eq "is not an email"
     end
   end
 end
