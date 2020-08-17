@@ -68,7 +68,7 @@ RSpec.describe User, type: :model do
   end
 
   context "フォーマットに沿わないメールアドレスが入力された時" do
-    fit "データ登録に失敗する" do
+    it "データ登録に失敗する" do
       user = build(:user, email: "aaaaaaaaaa")
 
       expect(user).to be_invalid
