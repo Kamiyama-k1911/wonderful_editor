@@ -37,5 +37,4 @@ RSpec.describe Comment, type: :model do
       expect(comment.errors.details[:body][0][:error]).to eq :blank
     end
   end
-
 end

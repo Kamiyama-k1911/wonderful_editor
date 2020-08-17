@@ -31,18 +31,18 @@
 #  index_users_on_uid_and_provider      (uid,provider) UNIQUE
 #
 class User < ActiveRecord::Base
-  has_many :articles , dependent: :destroy
-  has_many :comments , dependent: :destroy
+  has_many :articles, dependent: :destroy
+  has_many :comments, dependent: :destroy
   has_many :likes, dependent: :destroy
 
-  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+  extend Devise::Models
+  include DeviseTokenAuth::Concerns::User
+  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i.freeze
 
   validates :name, presence: true
   validates :email, presence: true, uniqueness: { case_sensitive: false }, format: { with: VALID_EMAIL_REGEX }
-  extend Devise::Models
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
-  include DeviseTokenAuth::Concerns::User
 end

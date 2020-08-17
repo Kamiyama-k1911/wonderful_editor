@@ -34,7 +34,6 @@ FactoryBot.define do
     sequence(:email) {|n| "#{n}_#{Faker::Internet.email}" }
     password { Faker::Internet.password }
   end
-
 end
 
 def user_with_articles(articles_count: 5)

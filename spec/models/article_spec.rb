@@ -31,7 +31,6 @@ RSpec.describe Article, type: :model do
     it "データ登録に失敗する" do
       user = build(:article, title: nil)
 
-
       binding.pry
 
       expect(user).to be_invalid
