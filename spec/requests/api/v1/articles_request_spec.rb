@@ -77,11 +77,12 @@ RSpec.describe "Articles", type: :request do
   end
 
   describe "PATCH /api/v1/articles.json/:id" do
-    subject { patch(api_v1_article_path(article.id), params: params ) }
+    subject { patch(api_v1_article_path(article.id), params: params) }
 
     let(:current_user) { create(:user) }
     let(:params) { { article: attributes_for(:article) } }
     before { allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user) }
+
     context "自分が所持している記事のレコードを更新しようとするとき" do
       let(:article) { create(:article, user: current_user) }
       it "記事更新に成功する" do
@@ -105,10 +106,11 @@ RSpec.describe "Articles", type: :request do
 
     let(:current_user) { create(:user) }
     before { allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user) }
+
     context "自分が所持している記事のレコードを削除しようとするとき" do
       let!(:article) { create(:article, user: current_user) }
       it "記事削除に成功する" do
-        expect { subject }.to change{ Article.count }.by(-1)
+        expect { subject }.to change { Article.count }.by(-1)
         expect(response).to have_http_status(:no_content)
       end
     end
