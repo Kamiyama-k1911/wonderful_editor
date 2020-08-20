@@ -25,8 +25,8 @@ RSpec.describe "Articles", type: :request do
       let(:article_id) { article.id }
       it "投稿詳細が取得できる" do
         subject
-        res = JSON.parse(response.body)
 
+        res = JSON.parse(response.body)
         expect(res["id"]).to eq article.id
         expect(res["title"]).to eq article.title
         expect(res["body"]).to eq article.body
