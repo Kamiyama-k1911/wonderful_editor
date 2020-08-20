@@ -1,8 +1,0 @@
-test:
-  adapter: postgresql
-  encoding: unicode
-  pool: 5
-  database: daily-report-api_test
-  username: postgres
-  password: postgres
-  host: localhost
