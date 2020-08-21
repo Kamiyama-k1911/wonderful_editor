@@ -100,10 +100,10 @@ RSpec.describe "Articles", type: :request do
   describe "DERETE /api/v1/articles.json/:id" do
     subject { delete(api_v1_article_path(article_id), headers: headers) }
 
-    let(:headers) { current_user.create_new_auth_token }
+    let(:headers) { user.create_new_auth_token }
+    let(:user) { create(:user) }
     context "自分が所持している記事のレコードを削除しようとするとき" do
-      let(:current_user) { create(:user) }
-      let(:article) { create(:article, user: current_user) }
+      let(:article) { create(:article, user: user) }
       let(:article_id) { article.id }
       it "記事削除に成功する" do
         expect { subject }.to change { Article.count }.by(-1)
