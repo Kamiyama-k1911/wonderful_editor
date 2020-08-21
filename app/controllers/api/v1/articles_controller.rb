@@ -1,21 +1,21 @@
 module Api::V1
   class ArticlesController < BaseApiController
     def index
-      @articles = Article.all.order(updated_at: "DESC")
-      render json: @articles, each_serializer: Api::V1::ArticlePreviewSerializer
+      articles = Article.all.order(updated_at: "DESC")
+      render json: articles, each_serializer: Api::V1::ArticlePreviewSerializer
     end
 
     def show
-      @article = Article.find(params[:id])
-      render json: @article, serializer: Api::V1::ArticleDetailSerializer
+      article = Article.find(params[:id])
+      render json: article, serializer: Api::V1::ArticleDetailSerializer
     end
 
     def create
-      @article = current_user.articles.build(article_params)
+      article = current_user.articles.build(article_params)
 
-      @article.save!
+      article.save!
 
-      render json: @article
+      render json: article
     end
 
     def update
@@ -28,7 +28,6 @@ module Api::V1
 
     def destroy
       article = current_user.articles.find(params[:id])
-
       article.destroy!
     end
 
