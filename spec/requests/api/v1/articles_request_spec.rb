@@ -46,18 +46,15 @@ RSpec.describe "Articles", type: :request do
   end
 
   describe "POST /api/v1/articles.json" do
-    subject { post(api_v1_articles_path, params: params) }
+    subject { post(api_v1_articles_path, params: params, headers: headers) }
 
+    let(:headers) { user.create_new_auth_token }
     context "正しいパラメータを入力した時" do
-      let(:params) do
-        { article: attributes_for(:article) }
-      end
-      let!(:current_user) { create(:user) }
-
-      before { allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user) }
+      let!(:user) { create(:user) }
+      let(:params) { { article: attributes_for(:article) } }
 
       it "新規記事投稿に成功する" do
-        expect { subject }.to change { Article.where(user_id: current_user.id).count }.by(1)
+        expect { subject }.to change { Article.where(user_id: user.id).count }.by(1)
         res = JSON.parse(response.body)
         expect(res["title"]).to eq params[:article][:title]
         expect(res["body"]).to eq params[:article][:body]
@@ -77,14 +74,13 @@ RSpec.describe "Articles", type: :request do
   end
 
   describe "PATCH /api/v1/articles.json/:id" do
-    subject { patch(api_v1_article_path(article.id), params: params) }
+    subject { patch(api_v1_article_path(article.id), params: params, headers: headers) }
 
-    let(:current_user) { create(:user) }
+    let(:user) { create(:user) }
     let(:params) { { article: attributes_for(:article) } }
-    before { allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user) }
-
+    let(:headers) { user.create_new_auth_token }
     context "自分が所持している記事のレコードを更新しようとするとき" do
-      let(:article) { create(:article, user: current_user) }
+      let(:article) { create(:article, user: user) }
       it "記事更新に成功する" do
         expect { subject }.to change { article.reload.title }.from(article.title).to(params[:article][:title]) &
                               change { article.reload.body }.from(article.body).to(params[:article][:body])
@@ -102,13 +98,13 @@ RSpec.describe "Articles", type: :request do
   end
 
   describe "DERETE /api/v1/articles.json/:id" do
-    subject { delete(api_v1_article_path(article.id)) }
+    subject { delete(api_v1_article_path(article_id), headers: headers) }
 
-    let(:current_user) { create(:user) }
-    before { allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user) }
-
+    let(:headers) { user.create_new_auth_token }
+    let(:user) { create(:user) }
     context "自分が所持している記事のレコードを削除しようとするとき" do
-      let!(:article) { create(:article, user: current_user) }
+      let(:article) { create(:article, user: user) }
+      let(:article_id) { article.id }
       it "記事削除に成功する" do
         expect { subject }.to change { Article.count }.by(-1)
         expect(response).to have_http_status(:no_content)
@@ -118,6 +114,8 @@ RSpec.describe "Articles", type: :request do
     context "自分が所持していない記事のレコードを削除しようとするとき" do
       let(:other_user) { create(:user) }
       let!(:article) { create(:article, user: other_user) }
+      let(:article_id) { article.id }
+
       it "記事削除に失敗する" do
         expect { subject }.to raise_error(ActiveRecord::RecordNotFound) & change { Article.count }.by(0)
       end
