@@ -103,10 +103,12 @@ RSpec.describe "Articles", type: :request do
     let(:headers) { user.create_new_auth_token }
     let(:user) { create(:user) }
     context "自分が所持している記事のレコードを削除しようとするとき" do
-      let(:article) { create(:article, user: user) }
-      let(:article_id) { article.id }
-      it "記事削除に成功する" do
-        expect { subject }.to change { Article.count }.by(-1)
+      let!(:article) { create(:article, user: user) }
+      let!(:article_id) { article.id }
+      fit "記事削除に成功する" do
+        subject
+        binding.pry
+        # expect { subject }.to change { Article.count }.by(-1)
         expect(response).to have_http_status(:no_content)
       end
     end
