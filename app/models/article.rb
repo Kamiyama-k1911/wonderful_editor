@@ -4,6 +4,7 @@
 #
 #  id         :bigint           not null, primary key
 #  body       :text
+#  status     :string           default("draft")
 #  title      :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
@@ -18,6 +19,10 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Article < ApplicationRecord
+  enum status: {
+    draft: "draft",
+    published: "published",
+  }
   validates :title, presence: true
   validates :body, presence: true
 
