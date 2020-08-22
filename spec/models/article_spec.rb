@@ -47,21 +47,23 @@ RSpec.describe Article, type: :model do
     end
   end
 
-  context "タイトルが空のデータを入力した時" do
-    it "データ登録に失敗する" do
-      article = build(:article, title: nil)
+  describe "異常系" do
+    context "タイトルが空のデータを入力した時" do
+      it "データ登録に失敗する" do
+        article = build(:article, title: nil)
 
-      expect(article).to be_invalid
-      expect(article.errors.details[:title][0][:error]).to eq :blank
+        expect(article).to be_invalid
+        expect(article.errors.details[:title][0][:error]).to eq :blank
+      end
     end
-  end
 
-  context "本文が空のデータを入力した時" do
-    it "データ登録に失敗する" do
-      article = build(:article, body: nil)
+    context "本文が空のデータを入力した時" do
+      it "データ登録に失敗する" do
+        article = build(:article, body: nil)
 
-      expect(article).to be_invalid
-      expect(article.errors.details[:body][0][:error]).to eq :blank
+        expect(article).to be_invalid
+        expect(article.errors.details[:body][0][:error]).to eq :blank
+      end
     end
   end
 end
