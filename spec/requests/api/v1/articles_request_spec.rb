@@ -4,30 +4,30 @@ RSpec.describe "Articles", type: :request do
   describe "GET /api/v1/articles.json" do
     subject { get(api_v1_articles_path) }
 
-      context "statusが本書きの時" do
-        before { create_list(:article, 3, :with_published) }
+    context "statusが本書きの時" do
+      before { create_list(:article, 3, :with_published) }
 
-        it "本書きの投稿一覧が取得できる" do
-          subject
-          res = JSON.parse(response.body)
+      it "本書きの投稿一覧が取得できる" do
+        subject
+        res = JSON.parse(response.body)
 
-          expect(res.length).to eq 3
-          expect(res[0].keys).to eq ["id", "title", "updated_at", "user"]
-          expect(res[0]["user"].keys).to eq ["id", "name", "email"]
-          expect(response).to have_http_status(:ok)
-        end
+        expect(res.length).to eq 3
+        expect(res[0].keys).to eq ["id", "title", "updated_at", "user"]
+        expect(res[0]["user"].keys).to eq ["id", "name", "email"]
+        expect(response).to have_http_status(:ok)
       end
+    end
 
-      context "statusが下書きの時" do
-        before { create_list(:article, 3) }
+    context "statusが下書きの時" do
+      before { create_list(:article, 3) }
 
-        it "本書きの投稿一覧が取得できない" do
-          subject
-          res = JSON.parse(response.body)
+      it "本書きの投稿一覧が取得できない" do
+        subject
+        res = JSON.parse(response.body)
 
-          expect(res.length).to eq 0
-        end
+        expect(res.length).to eq 0
       end
+    end
   end
 
   describe "GET /api/v1/articles.json/:id" do
