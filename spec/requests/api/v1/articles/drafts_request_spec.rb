@@ -1,8 +1,8 @@
 require "rails_helper"
 
-RSpec.describe "Api::V1::Drafts", type: :request do
+RSpec.describe "Api::V1::Articles::Drafts", type: :request do
   describe "GET /api/v1/articles/draft" do
-    subject { get(api_v1_draft_path, headers: headers) }
+    subject { get(api_v1_articles_drafts_path, headers: headers) }
 
     let(:headers) { user.create_new_auth_token }
     let(:user) { create(:user) }
@@ -33,7 +33,7 @@ RSpec.describe "Api::V1::Drafts", type: :request do
   end
 
   describe "GET /api/v1/articles/draft/:id" do
-    subject { get(api_v1_path(article.id), headers: headers) }
+    subject { get(api_v1_articles_draft_path(article.id), headers: headers) }
 
     let(:headers) { user.create_new_auth_token }
     let(:user) { create(:user) }
