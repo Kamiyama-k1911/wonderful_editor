@@ -12,9 +12,11 @@ Rails.application.routes.draw do
       mount_devise_token_auth_for "User", at: "auth", controllers: {
         registrations: "api/v1/auth/registrations",
       }
-      scope "/articles" do
-        get "/draft", to: "drafts#index"
-        get "/draft/:id", to: "drafts#show"
+      namespace :articles do
+        resources :drafts, only: [:index, :show]
+      end
+      namespace :current do
+        resources :articles, only: [:index]
       end
       resources :articles
     end
